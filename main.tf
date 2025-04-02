@@ -11,23 +11,23 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "~> 2.0"
     }
-  }
-  required_version = ">= 1.0.0"
-}
-
-
-
-# Configure the Azure provider (relying on 'az login' credentials)
-provider "azurerm" {
-  features {}
-
-backend "remote" {
+  backend "remote" {
         organization = "Wiz-Lab-Organization"
         workspaces {
           name = "wizLabYna"
         }
       }
+  
+  required_version = ">= 1.0.0"
+  }
 }
+
+
+
+# Configure the Azure provider (relying on 'az login' credentials)
+#provider "azurerm" {
+#  features {}
+#}
 
 
 
