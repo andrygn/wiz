@@ -215,6 +215,11 @@ output "blob_sas_url" {
 ###############################################################################
 # 4) Setting up Load Balancer
 ###############################################################################
+resource "azurerm_resource_group" "example" {
+  name     = "LoadBalancerRG"
+  location = "West Europe"
+}
+
 resource "azurerm_public_ip" "example" {
   name                = "PublicIPForLB"
   location            = azurerm_resource_group.example.location
@@ -230,5 +235,30 @@ resource "azurerm_lb" "example" {
   frontend_ip_configuration {
     name                 = "PublicIPAddress"
     public_ip_address_id = azurerm_public_ip.example.id
+  }
+}
+
+###############################################################################
+# 5) Setting up K8s Cluster in Private subnet
+###############################################################################
+
+resource "azurerm_kubernetes_cluster" "aks" {
+  name                = "tasky-aks"
+  location            = azurerm_resource_group.yna.location
+  resource_group_name = azurerm_resource_group.yna.name
+  dns_prefix          = "tasky"
+
+  default_node_pool {
+    name       = "default"
+    node_count = 1
+    vm_size    = "Standard_D2_v2"
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  tags = {
+    Environment = "Production"
   }
 }
