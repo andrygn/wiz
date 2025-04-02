@@ -9,8 +9,12 @@ required_providers {
       source  = "hashicorp/azurerm"
       version = "=3.0.0"
     }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.0"
+    }
   }
-  
+  required_version = ">= 1.0.0"
   cloud {
     organization = "Wiz-Lab-Organization"
 
@@ -20,6 +24,10 @@ required_providers {
   }
 }
 
+# Configure the Azure provider (relying on 'az login' credentials)
+provider "azurerm" {
+  features {}
+}
 
 ###############################################################################
 # 2) Virtual Machine Creation with Mongo DB
