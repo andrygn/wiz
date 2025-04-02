@@ -251,23 +251,41 @@ resource "azurerm_lb" "example" {
 # 5) Setting up K8s Cluster in Private subnet
 ###############################################################################
 
+
+resource "azurerm_resource_group" "aks_rg" {
+  name     = "aks-rg"
+  location = "West Europe"
+}
+
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = "tasky-aks"
-  location            = azurerm_resource_group.yna.location
-  resource_group_name = azurerm_resource_group.yna.name
+  location            = azurerm_resource_group.aks_rg.location
+  resource_group_name = azurerm_resource_group.aks_rg.name
   dns_prefix          = "tasky"
 
   default_node_pool {
     name       = "default"
     node_count = 1
-    vm_size    = "Standard_D2_v2"
+    vm_size    = "Standard_DS2_v2"
   }
 
   identity {
     type = "SystemAssigned"
   }
 
-  tags = {
-    Environment = "Production"
+  network_profile {
+    network_plugin = "azure"
+    load_balancer_sku = "standard"
   }
+
 }
+
+output "kube_config" {
+  value     = azurerm_kubernetes_cluster.aks.kube_config_raw
+  sensitive = true
+}
+
+output "kube_config_path" {
+  value = "${path.module}/kubeconfig"
+}
+
