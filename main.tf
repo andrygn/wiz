@@ -1,34 +1,24 @@
 ###############################################################################
 # 1) Terraform & Providers
 ###############################################################################
+
 terraform {
-  required_providers {
+
+required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.0"
+      version = "=3.0.0"
     }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 2.0"
-    }
-  backend "remote" {
-        organization = "Wiz-Lab-Organization"
-        workspaces {
-          name = "wizLabYna"
-        }
-      }
+  }
   
-  required_version = ">= 1.0.0"
+  cloud {
+    organization = "Wiz-Lab-Organization"
+
+    workspaces {
+      name = "wiz"
+    }
   }
 }
-
-
-
-# Configure the Azure provider (relying on 'az login' credentials)
-#provider "azurerm" {
-#  features {}
-#}
-
 
 
 ###############################################################################
