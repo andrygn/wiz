@@ -212,4 +212,3 @@ output "blob_sas_url" {
   sensitive = true
 }
 
-# TEST 123
