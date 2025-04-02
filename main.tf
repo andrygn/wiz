@@ -15,10 +15,21 @@ terraform {
   required_version = ">= 1.0.0"
 }
 
+
+
 # Configure the Azure provider (relying on 'az login' credentials)
 provider "azurerm" {
   features {}
+
+backend "remote" {
+        organization = "Wiz-Lab-Organization"
+        workspaces {
+          name = "wizLabYna"
+        }
+      }
 }
+
+
 
 ###############################################################################
 # 2) Virtual Machine Creation with Mongo DB
